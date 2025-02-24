@@ -6,3 +6,11 @@
   padding: 2rem;
   font-weight: normal;
 }
+
+.ant-space-item {
+  width: 100%;
+}
+
+li {
+  list-style: none;
+}
