@@ -4,7 +4,6 @@
     ref="formRef"
     name="account_form"
     :model="formState"
-    @finish="onFinish"
   >
     <div style="display: flex; gap: 10px; align-items: center">
       <h3>Учетные записи</h3>
@@ -53,36 +52,16 @@
 import { reactive, ref } from 'vue';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons-vue';
 import type { FormInstance } from 'ant-design-vue';
-
-interface Account {
-  id: number;
-  labels: string;
-  type: 'local' | 'ldap';
-  login: string;
-  password: string;
-}
+import { useAccountStore } from '../stores/account';
 
 const formRef = ref<FormInstance>();
+const accountStore = useAccountStore();
+const addAccount = accountStore.addAccount;
+const removeAccount = accountStore.removeAccount;
 
-const formState = reactive<{ accounts: Account[] }>({
-  accounts: [
-    { id: Date.now(), labels: '', type: 'local', login: '', password: '' },
-  ],
-});
-
-const addAccount = () => {
-  formState.accounts.push({
-    id: Date.now(),
-    labels: '',
-    type: 'local',
-    login: '',
-    password: '',
-  });
-};
-
-const removeAccount = (index: number) => {
-  formState.accounts.splice(index, 1);
-};
+const formState = {
+  accounts: accountStore.accounts
+}
 
 const onFinish = (values: any) => {
   console.log('Received values:', values);
