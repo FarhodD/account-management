@@ -20,11 +20,9 @@ export const useAccountStore = defineStore('account', () => {
       login: '',
       password: ''
     })
-    console.log('ADDED ACCOUNT: ', accounts.value);
   }
 
   const removeAccount = (index: number) => {
-    console.log('DELETE ACCOUNT ID: ', index)
     accounts.value.splice(index, 1)
   }
 

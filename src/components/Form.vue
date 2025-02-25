@@ -27,7 +27,7 @@
       "
       v-show="!formState.accounts.length"
     >
-      Пока список пуст <InboxOutlined style="font-size: 70px;" />
+      Пока список пуст <InboxOutlined style="font-size: 70px" />
     </div>
 
     <a-space
@@ -117,8 +117,6 @@ const formState = {
   accounts: accountStore.accounts
 }
 
-console.log('LABEL STRING', labelString);
-
 const syncLabels = (index: number) => {
   updateAccount(index, 'labels',
     labelString[index]
@@ -133,15 +131,4 @@ const handleTypeChange = (index: number, type: any) => {
     updateAccount(index, 'password', null)
   }
 }
-
-const onFinish = (values: any) => {
-  console.log('Received values:', values);
-};
 </script>
-
-<style scoped>
-.account-header {
-  display: flex;
-  justify-content: space-between;
-}
-</style>
