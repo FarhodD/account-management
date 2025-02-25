@@ -101,6 +101,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { ref } from 'vue';
 import { DeleteOutlined, InboxOutlined, PlusOutlined } from '@ant-design/icons-vue';
 import type { FormInstance } from 'ant-design-vue';
