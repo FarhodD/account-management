@@ -27,6 +27,16 @@ export const useAccountStore = defineStore('account', () => {
     accounts.value.splice(index, 1)
   }
 
-  return { accounts, addAccount, removeAccount }
+  const updateAccount = (index: number, field: keyof Account, value: any) => {
+    if (accounts.value[index]) {
+      (accounts.value[index] as any)[field] = value;
+    }
+  };
+
+  const labelString = computed(() =>
+    accounts.value.map(account => account.labels.map(label => label.text).join('; '))
+  );
+
+  return { accounts, addAccount, removeAccount, updateAccount, labelString }
 
 })

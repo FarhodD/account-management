@@ -19,22 +19,34 @@
       align="baseline"
     >
       <a-form-item :name="['accounts', index, 'labels']">
-        <a-input v-model:value="account.labels" placeholder="Метки (через ;)" />
+        <a-input
+        v-model:value="labelString[index]"
+        @blur="syncLabels(index)"
+          placeholder="Метки (через ;)"
+        />
       </a-form-item>
 
       <a-form-item :name="['accounts', index, 'type']">
-        <a-select v-model:value="account.type">
+        <a-select
+          @change="(val) => updateAccount(index, 'type', val)"
+          v-model:value="account.type"
+        >
           <a-select-option value="local">Локальная</a-select-option>
           <a-select-option value="ldap">LDAP</a-select-option>
         </a-select>
       </a-form-item>
 
       <a-form-item :name="['accounts', index, 'login']">
-        <a-input v-model:value="account.login" placeholder="Логин" />
+        <a-input
+          @blur="(event) => updateAccount(index, 'login', event.target.value)"
+          v-model:value="account.login"
+          placeholder="Логин"
+        />
       </a-form-item>
 
       <a-form-item :name="['accounts', index, 'password']">
         <a-input-password
+          @blur="(event) => updateAccount(index, 'password', event.target.value)"
           v-model:value="account.password"
           placeholder="Пароль"
         />
@@ -49,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { ref } from 'vue';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons-vue';
 import type { FormInstance } from 'ant-design-vue';
 import { useAccountStore } from '../stores/account';
@@ -58,10 +70,16 @@ const formRef = ref<FormInstance>();
 const accountStore = useAccountStore();
 const addAccount = accountStore.addAccount;
 const removeAccount = accountStore.removeAccount;
+const updateAccount = accountStore.updateAccount;
+const labelString = accountStore.labelString;
 
 const formState = {
   accounts: accountStore.accounts
 }
+
+const syncLabels = (index: number) => {
+  updateAccount(index, 'labels', labelString[index].split(';').map(text => ({ text: text.trim() })));
+};
 
 const onFinish = (values: any) => {
   console.log('Received values:', values);
