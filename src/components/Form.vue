@@ -20,13 +20,18 @@
     >
       <a-form-item :name="['accounts', index, 'labels']">
         <a-input
-        v-model:value="labelString[index]"
-        @blur="syncLabels(index)"
+          v-model:value="labelString[index]"
+          @blur="syncLabels(index)"
           placeholder="Метки (через ;)"
+          maxLength="50"
         />
       </a-form-item>
 
-      <a-form-item :name="['accounts', index, 'type']">
+      <a-form-item
+        :name="['accounts', index, 'type']"
+        :rules="[{ required: true, message: 'Тип обязателен' }]"
+        :validate-trigger="['blur']"
+      >
         <a-select
           @change="(val) => handleTypeChange(index, val)"
           v-model:value="account.type"
@@ -36,7 +41,14 @@
         </a-select>
       </a-form-item>
 
-      <a-form-item :name="['accounts', index, 'login']">
+      <a-form-item
+        :name="['accounts', index, 'login']"
+        :rules="[
+          { required: true, message: 'Логин обязателен' },
+          { max: 100, message: 'Максимальная длина 100 символов' },
+        ]"
+        :validate-trigger="['blur']"
+      >
         <a-input
           @blur="(event) => updateAccount(index, 'login', event.target.value)"
           v-model:value="account.login"
@@ -44,9 +56,19 @@
         />
       </a-form-item>
 
-      <a-form-item v-if="account.type === 'local'" :name="['accounts', index, 'password']">
+      <a-form-item
+        v-if="account.type === 'local'"
+        :name="['accounts', index, 'password']"
+        :rules="[
+          { required: true, message: 'Пароль обязателен' },
+          { max: 100, message: 'Максимальная длина 100 символов' },
+        ]"
+        :validate-trigger="['blur']"
+      >
         <a-input-password
-          @blur="(event) => updateAccount(index, 'password', event.target.value)"
+          @blur="
+            (event) => updateAccount(index, 'password', event.target.value)
+          "
           v-model:value="account.password"
           placeholder="Пароль"
         />
@@ -77,9 +99,11 @@ const formState = {
   accounts: accountStore.accounts
 }
 
+console.log('LABEL STRING', labelString);
+
 const syncLabels = (index: number) => {
   updateAccount(index, 'labels', labelString[index].split(';').map(text => ({ text: text.trim() })));
-};
+}
 
 const handleTypeChange = (index: number, type: any) => {
   updateAccount(index, 'type', type)
