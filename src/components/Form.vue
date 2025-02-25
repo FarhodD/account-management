@@ -1,13 +1,13 @@
 <template>
   <a-form
-    style="width: 100%"
+    style="width: 100%;"
     ref="formRef"
     name="account_form"
     :model="formState"
   >
-    <div style="display: flex; gap: 10px; align-items: center">
-      <h3>Учетные записи</h3>
-      <a-button type="dashed" @click="addAccount">
+    <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 20px;">
+      <h3 style="font-size: 18px; font-weight: bold;">Учетные записи</h3>
+      <a-button type="primary" @click="addAccount">
         <PlusOutlined />
         Добавить
       </a-button>
