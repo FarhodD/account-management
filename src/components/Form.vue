@@ -28,7 +28,7 @@
 
       <a-form-item :name="['accounts', index, 'type']">
         <a-select
-          @change="(val) => updateAccount(index, 'type', val)"
+          @change="(val) => handleTypeChange(index, val)"
           v-model:value="account.type"
         >
           <a-select-option value="local">Локальная</a-select-option>
@@ -44,7 +44,7 @@
         />
       </a-form-item>
 
-      <a-form-item :name="['accounts', index, 'password']">
+      <a-form-item v-if="account.type === 'local'" :name="['accounts', index, 'password']">
         <a-input-password
           @blur="(event) => updateAccount(index, 'password', event.target.value)"
           v-model:value="account.password"
@@ -80,6 +80,13 @@ const formState = {
 const syncLabels = (index: number) => {
   updateAccount(index, 'labels', labelString[index].split(';').map(text => ({ text: text.trim() })));
 };
+
+const handleTypeChange = (index: number, type: any) => {
+  updateAccount(index, 'type', type)
+  if (type === 'ldap') {
+    updateAccount(index, 'password', null)
+  }
+}
 
 const onFinish = (values: any) => {
   console.log('Received values:', values);
