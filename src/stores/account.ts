@@ -5,7 +5,7 @@ interface Account {
   labels: { text: string }[];
   type: 'local' | 'ldap';
   login: string;
-  password: string;
+  password: string | null;
 }
 
 export const useAccountStore = defineStore('account', () => {
@@ -28,20 +28,17 @@ export const useAccountStore = defineStore('account', () => {
       login: '',
       password: ''
     })
-    saveAccounts();
     console.log('ADDED ACCOUNT: ', accounts.value);
   }
 
   const removeAccount = (index: number) => {
     console.log('DELETE ACCOUNT ID: ', index)
     accounts.value.splice(index, 1)
-    saveAccounts();
   }
 
   const updateAccount = (index: number, field: keyof Account, value: any) => {
     if (accounts.value[index]) {
       (accounts.value[index] as any)[field] = value;
-      saveAccounts();
     }
   };
 

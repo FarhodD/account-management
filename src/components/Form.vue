@@ -102,7 +102,11 @@ const formState = {
 console.log('LABEL STRING', labelString);
 
 const syncLabels = (index: number) => {
-  updateAccount(index, 'labels', labelString[index].split(';').map(text => ({ text: text.trim() })));
+  updateAccount(index, 'labels',
+    labelString[index]
+      .split(';')
+      .map(text => ({ text: text.trim() }))
+  );
 }
 
 const handleTypeChange = (index: number, type: any) => {
