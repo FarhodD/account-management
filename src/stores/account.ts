@@ -2,7 +2,7 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 interface Account {
   id: number;
-  labels: string;
+  labels: { text: string }[];
   type: 'local' | 'ldap';
   login: string;
   password: string;
@@ -14,7 +14,7 @@ export const useAccountStore = defineStore('account', () => {
   const addAccount = () => {
     accounts.value.push({
       id: Date.now(),
-      labels: '',
+      labels: [{ text: '' }],
       type: 'local',
       login: '',
       password: ''
