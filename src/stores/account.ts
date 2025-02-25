@@ -1,5 +1,6 @@
 import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
+import { useLocalStorage } from '@/composables/useLocalStorage';
 interface Account {
   id: number;
   labels: { text: string }[];
@@ -9,16 +10,7 @@ interface Account {
 }
 
 export const useAccountStore = defineStore('account', () => {
-  const loadAccounts = (): Account[] => {
-    const accountsData = localStorage.getItem('accounts')
-    return accountsData ? JSON.parse(accountsData) : []
-  }
-  
-  const accounts = ref<Account[]>(loadAccounts())
-
-  const saveAccounts = () => {
-    localStorage.setItem('accounts', JSON.stringify(accounts.value))
-  }
+  const accounts = useLocalStorage<Account[]>('accounts', [])
 
   const addAccount = () => {
     accounts.value.push({
@@ -45,8 +37,6 @@ export const useAccountStore = defineStore('account', () => {
   const labelString = computed(() =>
     accounts.value.map(account => account.labels.map(label => label.text).join('; '))
   );
-
-  watch(accounts, saveAccounts, { deep: true });
 
   return { accounts, addAccount, removeAccount, updateAccount, labelString }
 
